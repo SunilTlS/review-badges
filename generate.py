@@ -39,8 +39,9 @@ STORES = {
     "us": "https://theayurvedaexperience.com",
     "au": "https://theayurvedaexperience.au",
     "ca": "https://www.theayurvedaexperience.ca",
-    "eu": "https://theayurvedaexperience.eu",
 }
+# Only build these stores (comma list). Add a store here once its /pages/review-count page exists.
+ENABLED = [s.strip() for s in os.environ.get("BADGE_STORES", "us").split(",") if s.strip() in STORES]
 COUNT_PATH = "/pages/review-count"
 LANGS = ("en", "es")
 SCALES = (1, 2)
@@ -112,7 +113,7 @@ def main() -> int:
     report = {"generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "stores": {}}
     failures = []
 
-    for store in STORES:
+    for store in ENABLED:
         print(f"[{store}]")
         try:
             count = fetch_count(store)
@@ -135,7 +136,7 @@ def main() -> int:
 
     links = "".join(
         f'<li><a href="{file_name(s, l, sc)}">{file_name(s, l, sc)}</a></li>'
-        for s in STORES for l in LANGS for sc in SCALES
+        for s in ENABLED for l in LANGS for sc in SCALES
     )
     with open(os.path.join(OUT, "index.html"), "w") as fh:
         fh.write(f"<!doctype html><title>Review badges</title><h1>Review badges</h1><p>Generated {report['generated_at']}</p><ul>{links}</ul>")
