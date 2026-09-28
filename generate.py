@@ -37,8 +37,6 @@ FONT_PATH = os.path.join(ASSETS, "OpenSans-Regular.ttf")
 
 STORES = {
     "us": "https://theayurvedaexperience.com",
-    "au": "https://theayurvedaexperience.au",
-    "ca": "https://www.theayurvedaexperience.ca",
 }
 # Only build these stores (comma list). Add a store here once its /pages/review-count page exists.
 ENABLED = [s.strip() for s in os.environ.get("BADGE_STORES", "us").split(",") if s.strip() in STORES]
